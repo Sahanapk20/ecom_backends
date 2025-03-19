@@ -6,15 +6,20 @@ const cartrouter = require('./routes/cartRoutes');
 
 
 const app=express();
-// const allowedOrigins=["ecom-frontend-umber.vercel.app","ecom-frontend-git-main-sahana-p-k-s-projects.vercel.app",
-// "ecom-frontend-gbivgka0h-sahana-p-k-s-projects.vercel.app" 
-// ]
-
-// 
-
+const allowedOrigins = ['https://ecom-frontend-umber.vercel.app'];
 app.use(cors({
-    origin: 'ecom-frontend-umber.vercel.app',
-  }));
+  origin: function(origin, callback) {
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  }
+}))
+
+// app.use(cors({
+//     origin: 'ecom-frontend-umber.vercel.app',
+//   }));
 app.use(express.json())
 
 connectDB()
