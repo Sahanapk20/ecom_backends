@@ -4,7 +4,7 @@ const cartSchema=mongoose.Schema({
     userId:String,
     items:[
         {
-            productID:Number,
+            productId:Number,
             name:String,
             price:Number
         }

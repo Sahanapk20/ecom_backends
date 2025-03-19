@@ -1,22 +1,22 @@
 const Cart= require('../modles/Cart')
 
 exports.addToCart=async(req,res)=>{
-    const {productID,name,price}=req.body
+    const {productId,name,price}=req.body
 
-    if (!productID) return res.status(400).json({message:"Product ID is missing "})
+    if (!productId) return res.status(400).json({message:"Product ID is missing "})
 
     let cart = await Cart.findOne({userId:req.user.id})
     if (!cart){
         cart=new Cart({userId:req.user.id,items:[]})
     } 
 
-    const existingitem = cart.items.find((item)=> item.productID && item.productID.toString() === productID.toString())
+    const existingitem = cart.items.find((item)=> item.productId && item.productId.toString() === productId.toString())
 
     if(existingitem){
         existingitem.quantity++
     }
     else{
-        cart.items.push({productID,name,price})
+        cart.items.push({productId,name,price})
     }
     await cart.save()
     res.json({cart,message:"Item added to cart"})
@@ -28,11 +28,11 @@ exports.getCart=async(req,res)=>{
 }
 
 exports.removeFromCart=async(req,res)=>{
-    const {productID} = req.body
+    const {productId} = req.body
     let cart=await Cart.findOne ({userId:req.user.id})
     if(!cart) return res.status(400).json({message:"cart not found"})
         
-    cart.items=cart.items.filter((item)=> item.productID !== productID)
+    cart.items=cart.items.filter((item)=> item.productId !== productId)
     await cart.save()
     res.json({cart,message:"Item Removed from cart"})
 }
